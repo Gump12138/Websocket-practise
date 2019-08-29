@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <base href="/client/"/>
+    <title>在线MM聊天室</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var url = "localhost:8081/server/clientMsgHandler";
+        var websocket = new WebSocket("ws://" + url);
+        /*打开事件*/
+        websocket.onopen = function () {
+            console.log("______________________");
+            console.log("连接上" + url);
+        };
+        /*获得消息事件*/
+        websocket.onmessage = function (ev) {
+            console.log("______________________");
+            console.log("获得消息：");
+            console.log(ev.data);
+            $("ul").append("<li class=\"message right\">\n" +
+                "            <img class=\"logo\" src=\"imgs/2.jpg\" alt=\"\">\n" +
+                "            <p>" + ev.data + "</p>\n" +
+                "        </li>");
+        };
+        /*关闭事件*/
+        websocket.onclose = function (ev) {
+            console.log("______________________");
+            console.log("关闭socket：");
+            console.log("错误代码：" + ev.code);
+            console.log("错误原因：" + ev.reason);
+        };
+        /*错误事件*/
+        websocket.onerror = function (ev) {
+            console.log("______________________");
+            console.log("发生错误事件");
+        };
+        //按键盘Enter键即可登录
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                var msg = $.trim($("#msgInput").val());
+                console.log("______________________");
+                console.log("发送的msg：" + msg);
+                websocket.send(msg);
+                $("ul").append("<li class=\"message left\">\n" +
+                    "            <img class=\"logo\" src=\"imgs/1.jpg\" alt=\"\">\n" +
+                    "            <p>" + msg + "</p>\n" +
+                    "        </li>");
+                $("#msgInput").val("");
+            }
+
+        })
+    </script>
+</head>
+<body>
+
+<h2>客户端版——欢迎来到大型<br/>MM聊天室</h2>
+<div class="chat-container">
+    <ul class="chat">
+    </ul>
+    <label>
+        <input type="text" id="msgInput" class="text_input" placeholder="Message..."/>
+    </label>
+</div>
+</body>
+</html>

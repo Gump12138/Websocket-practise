@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="socket-practise:war">
+    <output-path>$PROJECT_DIR$/socket-practise/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>socket-practise</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="socket-practise.war">
+      <element id="artifact" artifact-name="socket-practise:war exploded" />
+    </root>
+  </artifact>
+</component>
